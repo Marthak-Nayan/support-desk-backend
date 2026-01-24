@@ -3,6 +3,7 @@ package com.minisupportdesk.auth.controller;
 import com.minisupportdesk.auth.DTO.LoginRequestDTO;
 import com.minisupportdesk.auth.DTO.LoginResponseDTO;
 import com.minisupportdesk.auth.services.LoginServices;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -22,7 +23,7 @@ public class LoginController {
     private final LoginServices loginServices;
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginRequestDTO req){
+    public ResponseEntity<LoginResponseDTO> login(@Valid  @RequestBody LoginRequestDTO req){
         return ResponseEntity.ok(loginServices.login(req));
     }
 

@@ -7,6 +7,7 @@ import com.minisupportdesk.auth.DTO.SignUpRequestDTO;
 import com.minisupportdesk.auth.services.SignUpServices;
 import com.minisupportdesk.entities.Role;
 import com.minisupportdesk.entities.User;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +28,7 @@ public class SignUpController {
     private final UserRepositary userRepositary;
 
     @PostMapping("/signup")
-    public ResponseEntity<SignUpResponseDTO> signUp(@RequestBody SignUpRequestDTO req){
+    public ResponseEntity<SignUpResponseDTO> signUp(@Valid @RequestBody SignUpRequestDTO req){
             return ResponseEntity.ok(signUpServices.signUp(req));
     }
 

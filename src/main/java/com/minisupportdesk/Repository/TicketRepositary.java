@@ -16,8 +16,10 @@ public interface TicketRepositary extends JpaRepository<Ticket, Long> {
 
     //Page<Ticket> findByStatusInAndPriorityIn(List<String> statuses,List<String> priorities, Pageable pageable);
 
-    Page<Ticket> findByCreatedAt(Pageable pageable, LocalDate date);
-    Page<Ticket> findByCreatedAtAndId(Pageable pageable,Long userId,LocalDate date);
+    Ticket findByIdAndCreatedBy_Id(Long tickedId, Long creatorId);
+
+//    Page<Ticket> findByCreatedAt(Pageable pageable, LocalDate date);
+//    Page<Ticket> findByCreatedAtAndId(Pageable pageable,Long userId,LocalDate date);
 
     long countByCreatedAtBetween(LocalDateTime startOfDay, LocalDateTime endOfDay);
     long countByStatus(Status status);

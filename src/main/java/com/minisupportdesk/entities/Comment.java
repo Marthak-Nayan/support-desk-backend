@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-
+@Entity(name = "comment")
 public class Comment {
 
     @Id
@@ -22,10 +22,6 @@ public class Comment {
     @ManyToOne
     @JoinColumn(name = "ticket_id")
     private Ticket ticket;
-
-    @ManyToOne
-    @JoinColumn(name = "room_id")
-    private Room room;
 
     @ManyToOne
     @JoinColumn(name = "sender_id")

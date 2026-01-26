@@ -13,8 +13,8 @@ public class AllChatRespDTO {
 
     private List<CommentDTO> comment;
 
-    private Long roomId;
+//    private Long roomId;
 
-//    private Long tickedId;
+    private Long tickedId;
 
 }

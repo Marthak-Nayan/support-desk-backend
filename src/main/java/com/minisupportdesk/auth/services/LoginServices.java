@@ -33,13 +33,11 @@ public class LoginServices {
 
         String token = authUtils.generateAccessToken(user);
 
-        LoginResponseDTO response = LoginResponseDTO.builder()
+        return LoginResponseDTO.builder()
                 .userId(user.getId())
                 .accessToken(token)
                 .message("Login Successfully")
                 .role(user.getRole().name())
                 .build();
-
-        return response;
     }
 }

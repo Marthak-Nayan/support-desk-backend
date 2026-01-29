@@ -10,6 +10,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -19,24 +22,14 @@ public class AdminTickUpdateService {
     private final UserRepositary userRepositary;
     private final TicketRepositary ticketRepositary;
 
-    public ResponseEntity<?> updateTicket(Long id, AdminTicketUpdateReqDTO req,String username){
-        Ticket ticket = ticketRepositary.findById(id).orElseThrow(()-> new IllegalArgumentException("Ticket Not found"));;
+    @Transactional
+    public void updateTicket(Long id, AdminTicketUpdateReqDTO req,String username){
+        Ticket ticket = ticketRepositary.findById(id)
+                .orElseThrow(()-> new IllegalArgumentException("Ticket Not found"));
 
-        if(req.getTitle() != null){
-            ticket.setTitle(req.getTitle());
-        }
-        if(req.getDescription() != null){
-            ticket.setDescription(req.getDescription());
-        }
-        if(req.getStatus() != null){
-            ticket.setStatus(req.getStatus());
-        }
-        if(req.getPriority() != null){
-            ticket.setPriority(req.getPriority());
-        }
-        ticketRepositary.save(ticket);
-
-        return ResponseEntity.ok("Ticket Update Successfully");
+        Optional.ofNullable(req.getTitle()).ifPresent(ticket::setTitle);
+        Optional.ofNullable(req.getDescription()).ifPresent(ticket::setDescription);
+        Optional.ofNullable(req.getStatus()).ifPresent(ticket::setStatus);
+        Optional.ofNullable(req.getPriority()).ifPresent(ticket::setPriority);
     }
-
 }

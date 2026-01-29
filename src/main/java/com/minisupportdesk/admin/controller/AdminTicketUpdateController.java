@@ -17,7 +17,8 @@ public class AdminTicketUpdateController {
     @PutMapping("/updateTicket/{id}")
     public ResponseEntity<?> updateTicket(@PathVariable Long id, @RequestBody AdminTicketUpdateReqDTO req, Authentication authentication){
         String username = authentication.getName();
-        return adminTickUpdateService.updateTicket(id,req,username);
+        adminTickUpdateService.updateTicket(id, req, username);
+        return ResponseEntity.ok( "Ticket updated successfully");
     }
 
 }

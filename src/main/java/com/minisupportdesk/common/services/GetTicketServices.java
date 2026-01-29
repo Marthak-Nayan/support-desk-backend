@@ -1,39 +1,44 @@
 package com.minisupportdesk.common.services;
 
-import com.minisupportdesk.Repository.TicketRepositary;
 import com.minisupportdesk.Repository.UserRepositary;
-import com.minisupportdesk.common.DTO.FilterTicketDTO;
 import com.minisupportdesk.common.DTO.TicketDto;
 import com.minisupportdesk.common.DTO.TicketRespDTO;
+import com.minisupportdesk.entities.Priority;
+import com.minisupportdesk.entities.Status;
 import com.minisupportdesk.entities.Ticket;
 import com.minisupportdesk.entities.User;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
+import java.util.Map;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class GetTicketServices {
 
+    private final Map<String,TicketFetchStrategy> strategyMap;
     private final UserRepositary userRepositary;
-    private final TicketRepositary ticketRepositary;
 
-    public TicketRespDTO getAllTicket(Pageable pageable, String username){
-        User user = userRepositary.findByUsername(username).orElseThrow(()-> new IllegalArgumentException("User Not found"));
+    @Transactional
+    public TicketRespDTO getFilterTicket(Pageable pageable, List<Status> status,
+                                         List<Priority> priority, String username){
+        log.info("{}{}{}{}",pageable,status,priority,username);
+        User user = userRepositary.findByUsername(username)
+                .orElseThrow(()-> new IllegalArgumentException("User Not found"));
 
-        Page<Ticket> tickets = null;
+        TicketFetchStrategy strategy = strategyMap.get(user.getRole().name());
 
-        if(user.getRole().name().equals("ADMIN")){
-            tickets = ticketRepositary.findAll(pageable);
+        if(strategy == null){
+            throw new IllegalStateException(
+                    "No ticket strategy for role: " + user.getRole());
         }
-        if (user.getRole().name().equals("USER")) {
-            tickets = ticketRepositary.findByCreatedById(user.getId(),pageable);
-        }
+
+        Page<Ticket> tickets = strategy.fetchTickets(user.getId(), pageable, status, priority);
 
         List<TicketDto> safeTickets = tickets.getContent()
                 .stream()

@@ -34,5 +34,8 @@ public class Ticket {
     private User createdBy;
 
     @Column(nullable = false)
-    private LocalDateTime createdAt;;
+    private LocalDateTime createdAt;
+
+    @Version
+    private Long version
 }

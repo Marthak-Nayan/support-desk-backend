@@ -2,6 +2,7 @@ package com.minisupportdesk.error;
 
 import com.minisupportdesk.auth.DTO.SignUpResponseDTO;
 import io.jsonwebtoken.JwtException;
+import org.hibernate.dialect.lock.OptimisticEntityLockException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -38,27 +39,6 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(response);
     }
 
-//    @ExceptionHandler(UsernameNotFoundException.class)
-//    public ResponseEntity<ApiError> handleUsernameNotFoundException(UsernameNotFoundException ex) {
-//        ApiError apiError = ApiError.builder()
-//                .statusCode( HttpStatus.NOT_FOUND)
-//                .message("Username not found with username")
-//                .error(ex.getMessage())
-//                .build();
-//        return new ResponseEntity<>(apiError, apiError.getStatusCode());
-//    }
-//
-//    @ExceptionHandler(BadCredentialsException.class)
-//    public ResponseEntity<ApiError> handleBadCredentials(
-//            BadCredentialsException ex) {
-//
-//        ApiError apiError = ApiError.builder()
-//                .statusCode(HttpStatus.UNAUTHORIZED)
-//                .error(ex.getMessage())
-//                .message("Invalid username or password")
-//                .build();
-//        return new ResponseEntity<>(apiError,HttpStatus.UNAUTHORIZED);
-//    }
 
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<ApiError> handleAuthenticationException(AuthenticationException ex) {
@@ -82,13 +62,6 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(apiError, HttpStatus.UNAUTHORIZED);
     }
 
-//    @ExceptionHandler(AccessDeniedException.class)
-//    public ResponseEntity<ApiError> handleAccessDeniedException(AccessDeniedException ex) {
-//        ApiError apiError = new ApiError("Access denied: Insufficient permissions", HttpStatus.FORBIDDEN);
-//        return new ResponseEntity<>(apiError, HttpStatus.FORBIDDEN);
-//    }
-
-
     @ExceptionHandler(EmailAlreadyExistsException.class)
     public ResponseEntity<ApiError>handleIllegalArgumentException(EmailAlreadyExistsException ex){
         ApiError apiError = ApiError.builder()
@@ -110,6 +83,18 @@ public class GlobalExceptionHandler {
                 .message("An unexpected error occurred: ")
                 .build();
         return new ResponseEntity<>(apiError, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(OptimisticEntityLockException.class)
+    public ResponseEntity<ApiError> handleOptimisticEntityLockException(Exception ex){
+         ApiError apiError = ApiError.builder()
+                .timeStamp(LocalDateTime.now())
+                .statusCode(HttpStatus.CONFLICT)
+                .error(ex.getMessage())
+                .message("Data was updated by another user. Please refresh.")
+                .build();
+
+         return new ResponseEntity<>(apiError, HttpStatus.CONFLICT);
     }
 
 }

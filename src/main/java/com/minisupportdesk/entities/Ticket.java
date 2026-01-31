@@ -37,5 +37,5 @@ public class Ticket {
     private LocalDateTime createdAt;
 
     @Version
-    private Long version
+    private Long version;
 }

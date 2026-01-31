@@ -1,9 +1,10 @@
-package com.minisupportdesk.common.services;
+package com.minisupportdesk.common.ticket.service;
 
 import com.minisupportdesk.Repository.TicketRepositary;
 import com.minisupportdesk.Repository.UserRepositary;
-import com.minisupportdesk.common.DTO.CreateTicketReqDTO;
-import com.minisupportdesk.common.DTO.CreateTicketRespDTO;
+import com.minisupportdesk.common.dashboard.service.StatsService;
+import com.minisupportdesk.common.ticket.DTO.CreateTicketReqDTO;
+import com.minisupportdesk.common.ticket.DTO.CreateTicketRespDTO;
 import com.minisupportdesk.entities.Status;
 import com.minisupportdesk.entities.Ticket;
 import com.minisupportdesk.entities.User;
@@ -12,7 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Service
@@ -22,6 +22,8 @@ public class CreateTicketService {
 
     private final UserRepositary userRepositary;
     private final TicketRepositary ticketRepositary;
+    private final StatsService statsService;
+
     public CreateTicketRespDTO createTicket(CreateTicketReqDTO req,String username){
         User user = userRepositary.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
@@ -36,6 +38,14 @@ public class CreateTicketService {
                 .build();
 
         ticketRepositary.save(ticket);
+
+        statsService.increment("tickets:today");
+        statsService.increment("tickets:week");
+        statsService.increment("tickets:open");
+
+        statsService.pushStats();
+
+
         return CreateTicketRespDTO.builder()
                 .createByName(username)
                 .message("Ticket Created Successfully")

@@ -1,8 +1,8 @@
-package com.minisupportdesk.common.controller;
+package com.minisupportdesk.common.comment.controller;
 
 
-import com.minisupportdesk.common.DTO.RoomEventDTO;
-import com.minisupportdesk.common.services.CommentServices;
+import com.minisupportdesk.common.comment.DTO.RoomEventDTO;
+import com.minisupportdesk.common.comment.service.CommentServices;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;

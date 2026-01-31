@@ -1,4 +1,4 @@
-package com.minisupportdesk.common.services;
+package com.minisupportdesk.common.ticket.service;
 
 import com.minisupportdesk.Repository.TicketRepositary;
 import com.minisupportdesk.entities.Priority;
@@ -11,27 +11,27 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Component("USER")
+@Component("ADMIN_TICKET")
 @RequiredArgsConstructor
-public class UserTicketFetchStrategy implements TicketFetchStrategy{
+public class AdminTicketFetchStrategy implements TicketFetchStrategy{
 
     private final TicketRepositary ticketRepositary;
 
     @Override
     public Page<Ticket> fetchTickets(Long userId, Pageable pageable, List<Status> statuses, List<Priority> priorities) {
+
         boolean hasStatus = statuses != null && !statuses.isEmpty();
         boolean hasPriority = priorities != null && !priorities.isEmpty();
 
         if(hasStatus && hasPriority){
-            return ticketRepositary.findAllByCreatedByIdAndStatusInAndPriorityIn(userId, statuses, priorities, pageable);
+            return ticketRepositary.findAllByStatusInAndPriorityIn(statuses, priorities, pageable);
         }
         if (hasStatus){
-            return ticketRepositary.findAllByCreatedByIdAndStatusIn(userId, statuses, pageable);
+            return ticketRepositary.findAllByStatusIn(statuses, pageable);
         }
         if (hasPriority){
-            return ticketRepositary.findAllByCreatedByIdAndPriorityIn(userId, priorities, pageable);
+            return ticketRepositary.findAllByPriorityIn(priorities, pageable);
         }
-
-        return ticketRepositary.findAllByCreatedById(userId, pageable);
+        return ticketRepositary.findAll(pageable);
     }
 }

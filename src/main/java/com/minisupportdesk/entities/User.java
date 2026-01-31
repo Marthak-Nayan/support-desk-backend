@@ -40,6 +40,7 @@ public class User implements UserDetails {
     private LocalDateTime createdAt;
 
     @Version
+    @Column(nullable = false)
     private Long version;
 
     @Override

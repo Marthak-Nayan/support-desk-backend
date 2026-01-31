@@ -1,20 +1,18 @@
-package com.minisupportdesk.common.services;
+package com.minisupportdesk.common.comment.service;
 
 import com.minisupportdesk.Repository.CommentRepository;
 import com.minisupportdesk.Repository.TicketRepositary;
 import com.minisupportdesk.Repository.UserRepositary;
-import com.minisupportdesk.common.DTO.AllChatRespDTO;
-import com.minisupportdesk.common.DTO.CommentDTO;
-import com.minisupportdesk.common.DTO.RoomEventDTO;
+import com.minisupportdesk.common.comment.DTO.AllChatRespDTO;
+import com.minisupportdesk.common.comment.DTO.CommentDTO;
+import com.minisupportdesk.common.comment.DTO.RoomEventDTO;
 import com.minisupportdesk.entities.Comment;
 import com.minisupportdesk.entities.Role;
 import com.minisupportdesk.entities.Ticket;
 import com.minisupportdesk.entities.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 

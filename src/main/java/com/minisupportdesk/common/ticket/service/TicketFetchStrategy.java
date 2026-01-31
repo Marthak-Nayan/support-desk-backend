@@ -1,4 +1,4 @@
-package com.minisupportdesk.common.services;
+package com.minisupportdesk.common.ticket.service;
 
 import com.minisupportdesk.entities.Priority;
 import com.minisupportdesk.entities.Status;

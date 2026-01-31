@@ -1,7 +1,7 @@
-package com.minisupportdesk.common.controller;
+package com.minisupportdesk.common.comment.controller;
 
-import com.minisupportdesk.common.DTO.AllChatRespDTO;
-import com.minisupportdesk.common.services.CommentServices;
+import com.minisupportdesk.common.comment.DTO.AllChatRespDTO;
+import com.minisupportdesk.common.comment.service.CommentServices;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

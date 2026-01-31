@@ -1,7 +1,7 @@
-package com.minisupportdesk.common.controller;
+package com.minisupportdesk.common.ticket.controller;
 
-import com.minisupportdesk.common.DTO.TicketRespDTO;
-import com.minisupportdesk.common.services.GetTicketServices;
+import com.minisupportdesk.common.ticket.DTO.TicketRespDTO;
+import com.minisupportdesk.common.ticket.service.GetTicketServices;
 import com.minisupportdesk.entities.Priority;
 import com.minisupportdesk.entities.Status;
 import lombok.RequiredArgsConstructor;

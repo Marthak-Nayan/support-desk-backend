@@ -1,8 +1,8 @@
-package com.minisupportdesk.common.services;
+package com.minisupportdesk.common.ticket.service;
 
 import com.minisupportdesk.Repository.UserRepositary;
-import com.minisupportdesk.common.DTO.TicketDto;
-import com.minisupportdesk.common.DTO.TicketRespDTO;
+import com.minisupportdesk.common.ticket.DTO.TicketDto;
+import com.minisupportdesk.common.ticket.DTO.TicketRespDTO;
 import com.minisupportdesk.entities.Priority;
 import com.minisupportdesk.entities.Status;
 import com.minisupportdesk.entities.Ticket;
@@ -21,7 +21,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class GetTicketServices {
 
-    private final Map<String,TicketFetchStrategy> strategyMap;
+    private final Map<String, TicketFetchStrategy> strategyMap;
     private final UserRepositary userRepositary;
 
     @Transactional
@@ -31,11 +31,11 @@ public class GetTicketServices {
         User user = userRepositary.findByUsername(username)
                 .orElseThrow(()-> new IllegalArgumentException("User Not found"));
 
-        TicketFetchStrategy strategy = strategyMap.get(user.getRole().name());
+        TicketFetchStrategy strategy = strategyMap.get(user.getRole().name()+"_TICKET");
 
         if(strategy == null){
             throw new IllegalStateException(
-                    "No ticket strategy for role: " + user.getRole());
+                    "No ticket strategy for role: " + user.getRole()+"_TICKET");
         }
 
         Page<Ticket> tickets = strategy.fetchTickets(user.getId(), pageable, status, priority);

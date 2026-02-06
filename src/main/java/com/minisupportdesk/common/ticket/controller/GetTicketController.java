@@ -18,7 +18,7 @@ public class GetTicketController {
 
     private final GetTicketServices getTicketServices;
 
-    @GetMapping("/")
+    @GetMapping()
     public TicketRespDTO getAllOrFilterTickets(Pageable pageable,
                                        @RequestParam(required = false) List<Status> statuses,
                                        @RequestParam(required = false) List<Priority> priorities,

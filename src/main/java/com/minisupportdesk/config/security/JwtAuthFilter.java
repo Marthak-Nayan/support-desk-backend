@@ -6,6 +6,7 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -36,16 +37,25 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         String path = request.getRequestURI();
         log.info("Incoming Request: {}",path);
 
-        try {
-            String authHeader = request.getHeader("Authorization");
+        String jwtToken = null;
+        Cookie[] cookies = request.getCookies();
 
-            if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-                filterChain.doFilter(request, response);
-                return;
+        if(cookies != null){
+            for(Cookie cookie : cookies){
+                if("access_token".equals(cookie.getName())){
+                    jwtToken = cookie.getValue();
+                    break;
+                }
             }
+        }
 
-            final String token = authHeader.substring(7);
-            final String username = authUtils.getUsernameFromToken(token);
+        if (jwtToken == null) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        try {
+            final String username = authUtils.getUsernameFromToken(jwtToken);
 
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 

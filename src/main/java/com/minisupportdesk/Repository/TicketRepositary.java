@@ -29,10 +29,7 @@ public interface TicketRepositary extends JpaRepository<Ticket, Long> {
     Page<Ticket> findAllByStatusIn(List<Status> statuses, Pageable pageable);
     Page<Ticket> findAllByPriorityIn(List<Priority> priorities, Pageable pageable);
 
-
-
-    Page<Ticket> findAllByCreatedByIdAndStatusInAndPriorityIn(Long userId, List<Status> statuses,
-                                                              List<Priority> priorities, Pageable pageable );
+    Page<Ticket> findAllByCreatedByIdAndStatusInAndPriorityIn(Long userId, List<Status> statuses, List<Priority> priorities, Pageable pageable );
     Page<Ticket> findAllByCreatedByIdAndPriorityIn(Long userId, List<Priority> priorities, Pageable pageable);
     Page<Ticket> findAllByCreatedByIdAndStatusIn(Long userId,List<Status> statuses, Pageable pageable);
 

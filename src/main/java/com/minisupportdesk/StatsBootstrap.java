@@ -21,7 +21,6 @@ public class StatsBootstrap {
 
     private final TicketRepositary ticketRepositary;
     private final StatsService statsService;
-    private final RedisConnectionFactory redisConnectionFactory;
 
     @EventListener(ApplicationReadyEvent.class)
     public void init(){

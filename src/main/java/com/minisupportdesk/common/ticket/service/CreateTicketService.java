@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
@@ -24,6 +25,7 @@ public class CreateTicketService {
     private final TicketRepositary ticketRepositary;
     private final StatsService statsService;
 
+    @Transactional
     public CreateTicketRespDTO createTicket(CreateTicketReqDTO req,String username){
         User user = userRepositary.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));

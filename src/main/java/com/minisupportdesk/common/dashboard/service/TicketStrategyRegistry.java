@@ -1,7 +1,6 @@
 package com.minisupportdesk.common.dashboard.service;
 
 import com.minisupportdesk.entities.Role;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.EnumMap;
@@ -18,7 +17,7 @@ public class TicketStrategyRegistry {
         for(MetricsService service : metricsServices){
             map.put(service.supports(),service);
         }
-        this.metricsServiceMap =map;
+        this.metricsServiceMap =Map.copyOf(map);
     }
 
     public MetricsService getRoleService(Role role){
